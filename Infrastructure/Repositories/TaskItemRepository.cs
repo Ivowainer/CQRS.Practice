@@ -34,7 +34,7 @@ namespace CQRS.Practice.Infrastructure.Repositories
 
         public async Task<bool> DeleteTask(int id)
         {
-            TaskItem taskToDelete = _dbContext.TaksItems.FirstOrDefault(t => t.Id == id);
+            var taskToDelete = _dbContext.TaksItems.FirstOrDefault(t => t.Id == id);
 
             if (taskToDelete != null)
             {
@@ -48,14 +48,24 @@ namespace CQRS.Practice.Infrastructure.Repositories
             }
         }
 
-        public Task<TaskItemDto> UpdateTask(int id, string? Title, string? Description)
+        public async Task<TaskItemDto> UpdateTask(int id, string? Title, string? Description)
         {
-            throw new NotImplementedException();
+            var existingTaskItem = await _dbContext.TaksItems.FindAsync(id) ?? throw new InvalidOperationException("Task not found");
+
+            existingTaskItem.Title = Title ?? existingTaskItem.Title;
+            existingTaskItem.Description = Description ?? existingTaskItem.Description;
+
+            await _dbContext.SaveChangesAsync();
+
+            return new TaskItemDto
+            {
+                Title = existingTaskItem.Title,
+                Description = existingTaskItem.Description
+            };
         }
 
         public Task<IEnumerable<TaskItemDto>> GetAllTask()
         {
-
             throw new NotImplementedException();
         }
 
