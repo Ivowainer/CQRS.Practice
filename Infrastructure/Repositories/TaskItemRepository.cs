@@ -1,17 +1,35 @@
 using CQRS.Practice.Application.DTOs;
+using CQRS.Practice.Domain;
+using CQRS.Practice.Infrastructure.Data;
 
 namespace CQRS.Practice.Infrastructure.Repositories
 {
     public class TaskItemRepository : ITaskItemRepository
     {
-        public TaskItemDto CreateTask(string Title, string Description, bool? IsCompleted)
+        private readonly ApplicationDbContext _dbContext;
+        public TaskItemRepository(ApplicationDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
         }
-
-        public TaskItemDto UpdateTask(int id, string? Title, string? Description)
+        public async Task<TaskItemDto> CreateTask(string Title, string Description, bool? IsCompleted)
         {
-            throw new NotImplementedException();
+            TaskItem taskItem = new TaskItem
+            {
+                Title = Title,
+                Description = Description,
+                IsCompleted = IsCompleted ?? false
+            };
+
+            _dbContext.TaksItems.Add(taskItem);
+            await _dbContext.SaveChangesAsync();
+
+            return new TaskItemDto
+            {
+                Id = taskItem.Id,
+                Title = taskItem.Title,
+                Description = taskItem.Description,
+                IsCompleted = taskItem.IsCompleted
+            };
         }
 
         public bool DeleteTask(int id)
@@ -19,12 +37,18 @@ namespace CQRS.Practice.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public TaskItemDto GetTaskById(int id)
+        public Task<IEnumerable<TaskItemDto>> GetAllTask()
+        {
+
+            throw new NotImplementedException();
+        }
+
+        public Task<TaskItemDto> GetTaskById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<TaskItemDto> GetAllTask()
+        public Task<TaskItemDto> UpdateTask(int id, string? Title, string? Description)
         {
             throw new NotImplementedException();
         }

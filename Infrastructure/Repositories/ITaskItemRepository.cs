@@ -4,10 +4,10 @@ namespace CQRS.Practice.Infrastructure.Repositories
 {
     public interface ITaskItemRepository
     {
-        public TaskItemDto CreateTask(string Title, string Description, bool? IsCompleted);
-        public TaskItemDto UpdateTask(int id, string? Title, string? Description);
+        public Task<TaskItemDto> CreateTask(string Title, string Description, bool? IsCompleted);
+        public Task<TaskItemDto> UpdateTask(int id, string? Title, string? Description);
         public bool DeleteTask(int id);
-        public TaskItemDto GetTaskById(int id);
-        public IEnumerable<TaskItemDto> GetAllTask();
+        public Task<TaskItemDto> GetTaskById(int id);
+        public Task<IEnumerable<TaskItemDto>> GetAllTask();
     }
 }
