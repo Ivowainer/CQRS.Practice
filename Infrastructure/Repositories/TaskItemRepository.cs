@@ -32,7 +32,23 @@ namespace CQRS.Practice.Infrastructure.Repositories
             };
         }
 
-        public bool DeleteTask(int id)
+        public async Task<bool> DeleteTask(int id)
+        {
+            TaskItem taskToDelete = _dbContext.TaksItems.FirstOrDefault(t => t.Id == id);
+
+            if (taskToDelete != null)
+            {
+                _dbContext.TaksItems.Remove(taskToDelete);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public Task<TaskItemDto> UpdateTask(int id, string? Title, string? Description)
         {
             throw new NotImplementedException();
         }
@@ -48,9 +64,5 @@ namespace CQRS.Practice.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<TaskItemDto> UpdateTask(int id, string? Title, string? Description)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

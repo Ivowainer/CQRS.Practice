@@ -6,7 +6,7 @@ namespace CQRS.Practice.Infrastructure.Repositories
     {
         public Task<TaskItemDto> CreateTask(string Title, string Description, bool? IsCompleted);
         public Task<TaskItemDto> UpdateTask(int id, string? Title, string? Description);
-        public bool DeleteTask(int id);
+        public Task<bool> DeleteTask(int id);
         public Task<TaskItemDto> GetTaskById(int id);
         public Task<IEnumerable<TaskItemDto>> GetAllTask();
     }
