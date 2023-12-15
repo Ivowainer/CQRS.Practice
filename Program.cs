@@ -1,4 +1,6 @@
+using System.Reflection;
 using CQRS.Practice.Infrastructure.Data;
+using CQRS.Practice.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,8 +11,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("TaskDb"));
+builder.Services.AddScoped<ITaskItemRepository, TaskItemRepository>();
 
-builder.Services.AddMediatR(typeof(Program).Assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
 var app = builder.Build();
 

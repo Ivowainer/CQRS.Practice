@@ -14,6 +14,7 @@ namespace CQRS.Practice.Application.Handlers
         }
         public Task<IEnumerable<TaskItemDto>> Handle(GetAllTaskQuery request, CancellationToken cancellationToken)
         {
+            return _taskItemRepository.GetAllTask();
         }
     }
 }

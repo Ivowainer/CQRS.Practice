@@ -1,6 +1,7 @@
 using CQRS.Practice.Application.DTOs;
 using CQRS.Practice.Domain;
 using CQRS.Practice.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Practice.Infrastructure.Repositories
 {
@@ -64,14 +65,30 @@ namespace CQRS.Practice.Infrastructure.Repositories
             };
         }
 
-        public Task<IEnumerable<TaskItemDto>> GetAllTask()
+        public async Task<IEnumerable<TaskItemDto>> GetAllTask()
         {
-            throw new NotImplementedException();
+            var allTaskItems = await _dbContext.TaksItems.ToListAsync();
+
+            return allTaskItems.Select(taskItem => new TaskItemDto
+            {
+                Id = taskItem.Id,
+                Title = taskItem.Title,
+                Description = taskItem.Description,
+                IsCompleted = taskItem.IsCompleted
+            });
         }
 
-        public Task<TaskItemDto> GetTaskById(int id)
+        public async Task<TaskItemDto> GetTaskById(int id)
         {
-            throw new NotImplementedException();
+            var taskItem = await _dbContext.TaksItems.FindAsync(id) ?? throw new InvalidOperationException("Task not found");
+
+            return new TaskItemDto
+            {
+                Id = taskItem.Id,
+                Title = taskItem.Title,
+                Description = taskItem.Description,
+                IsCompleted = taskItem.IsCompleted
+            };
         }
 
     }
