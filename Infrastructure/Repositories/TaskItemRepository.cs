@@ -28,7 +28,5 @@ namespace CQRS.Practice.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
-
-        public TaskItemDto
     }
 }
